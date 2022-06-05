@@ -22,7 +22,7 @@
 // #define tf ti
 // #define dt 0.1
 
-// #define tp 'C'
+ #define tp 'C'
 
 // #define hi 0.00
 // #define hf hi
@@ -362,11 +362,12 @@ void todo (int L, int *Spin, double *bp, int *a, double beta, double Jtot, doubl
   int MCtot = MCini+mea*MCd;
   int i,j,k;
   
-//   int sigma = 10*sg;
-//   char out_data[60];
-//   FILE *file_data;
-//   sprintf(out_data,"TODO_1D_%05d_%02d_PBC_T%1c.dat",L,sigma,tp);
-//   file_data = fopen(out_data,"a+");
+   int sigma = 10*0.1;
+   char out_data[60];
+   FILE *file_data;
+   sprintf(out_data,"TODO_1D_%05d_%02d_PBC_T%1c.csv",L,sigma,tp);
+   file_data = fopen(out_data,"a+");
+   fprintf(file_data,"L, h, E, M\n");
   
   double sum = 0,sum_E = 0,sum_E2 = 0,sum_M = 0,sum_M2 = 0;
   
@@ -435,12 +436,12 @@ void todo (int L, int *Spin, double *bp, int *a, double beta, double Jtot, doubl
       int M = 0;
       for (i = 0; i < L; ++i) M += Spin[i];
 //     double E = energy(L, Spin,M,h,dist);
-      double E = 0;
+      double E = sum_mu;
       
       
       
       sum += 1.;
-      sum_E += sum_mu;
+      sum_E += E;
       //sum_E2 += sum_mu*sum_mu;
      // sum_E += E;
       sum_E2 += E*E;
@@ -448,8 +449,9 @@ void todo (int L, int *Spin, double *bp, int *a, double beta, double Jtot, doubl
       sum_M2 += M*M;
       
       
-     // fprintf(file_data,"L= %d h= %2.2f E= %6.6f M= %d\n", L,h,E,M);     
-    } 
+//      fprintf(file_data,"L= %d h= %2.2f E= %6.6f M= %d\n", L,h,E,M);
+      fprintf(file_data,"%d, %2.2f, %6.6f, %d\n", L,h,E,M);
+    }
     
   }
   
@@ -466,7 +468,7 @@ void todo (int L, int *Spin, double *bp, int *a, double beta, double Jtot, doubl
   
   printf("TODO:    L= %d | T= %2.4f | h= %2.2f | e= %1.5f | m= %1.5f | x= %4.5f \n", L,T,h,e,m,x);
 //  fprintf(file_data,"%d %2.4f %2.4f %1.5f %4.5f %1.5f %4.5f %4.5f %4.5f %16.5f\n", L,T,h,e,c,m,x,mk1,xk1,xi);
-  //fclose(file_data); 
+  fclose(file_data);
 }
 //=============================================================================
 

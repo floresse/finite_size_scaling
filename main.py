@@ -1,16 +1,22 @@
-# This is a sample Python script.
+from ctypes import *
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+8 to toggle the breakpoint.
+simulation = CDLL('src/simulation.so')
 
 
-# Press the green button in the gutter to run the script.
+def main():
+    L = 64
+    sigma = c_double(0.1)
+
+    T_ini = c_double(10.7)
+    T_fin = T_ini
+    dT = c_double(0.1)
+
+    h_ini = c_double(0.0)
+    h_fin = h_ini
+    dh = c_double(0.1)
+
+    simulation.simulation(L, sigma, T_ini, T_fin, dT, h_ini, h_fin, dh)
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
