@@ -357,7 +357,7 @@ void luijten (int L, int *Spin, double *bp, int *a, double beta, double Jtot, do
 void todo (int L, int *Spin, double *bp, int *a, double beta, double Jtot, double *dist,double h)
 {
   int MCini = 3*L;
-  int mea   = 100000;
+  int mea   = 10000;
   int MCd   = 20;
   int MCtot = MCini+mea*MCd;
   int i,j,k;
@@ -365,11 +365,11 @@ void todo (int L, int *Spin, double *bp, int *a, double beta, double Jtot, doubl
    int sigma = 10*0.1;
    char out_data[60];
    FILE *file_data;
-   sprintf(out_data,"TODO_1D_%05d_%02d_PBC_T%1c.csv",L,sigma,tp);
+   sprintf(out_data,"data/TODO_1D_%05d_%02d_PBC_%6.6f.csv",L,sigma,1.0/beta);
    file_data = fopen(out_data,"a+");
-   fprintf(file_data,"L, h, E, M\n");
+   fprintf(file_data,"K,E,M\n");
   
-  double sum = 0,sum_E = 0,sum_E2 = 0,sum_M = 0,sum_M2 = 0;
+  double sum = 0,sum_E = 0, sum_E_k = 0, sum_E2 = 0,sum_M = 0,sum_M2 = 0;
   
   int imc;
   for (imc = 0; imc < MCtot; ++imc)  {
@@ -435,13 +435,14 @@ void todo (int L, int *Spin, double *bp, int *a, double beta, double Jtot, doubl
         
       int M = 0;
       for (i = 0; i < L; ++i) M += Spin[i];
-//     double E = energy(L, Spin,M,h,dist);
-      double E = sum_mu;
+      double E = energy(L, Spin,M,h,dist);
+      int E_k = sum_mu;
       
       
       
       sum += 1.;
       sum_E += E;
+      sum_E_k += E_k;
       //sum_E2 += sum_mu*sum_mu;
      // sum_E += E;
       sum_E2 += E*E;
@@ -450,7 +451,7 @@ void todo (int L, int *Spin, double *bp, int *a, double beta, double Jtot, doubl
       
       
 //      fprintf(file_data,"L= %d h= %2.2f E= %6.6f M= %d\n", L,h,E,M);
-      fprintf(file_data,"%d, %2.2f, %6.6f, %d\n", L,h,E,M);
+      fprintf(file_data,"%6.6f,%d,%d\n",E,M,E_k);
     }
     
   }

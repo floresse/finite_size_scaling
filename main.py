@@ -7,9 +7,9 @@ def main():
     L = 64
     sigma = c_double(0.1)
 
-    T_ini = c_double(10.7)
-    T_fin = T_ini
-    dT = c_double(0.1)
+    T_ini = c_double(12.0)
+    T_fin = c_double(28.0)
+    dT = c_double(0.5)
 
     h_ini = c_double(0.0)
     h_fin = h_ini
